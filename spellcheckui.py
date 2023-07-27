@@ -242,8 +242,8 @@ class Ui_SpellCheck(object):
                     inDictionary =  i in self.words_list
                     if(not inDictionary):
                         pos = newString.find(i, startPos)
-                        #newString = newString[0:pos] + "<u style='color:red;'>" + str(i) + "</u>" + newString[pos+len(i):len(newString)]
-                        newString = newString[0:pos] + "<u style='text-decoration: underline;text-decoration-color: blue;'>" + str(i) + "</u>" + newString[pos+len(i):len(newString)]
+                        newString = newString[0:pos] + "<u style='color:red;'>" + str(i) + "</u>" + newString[pos+len(i):len(newString)]
+                        #newString = newString[0:pos] + "<u style='text-decoration: underline;text-decoration-color: blue;'>" + str(i) + "</u>" + newString[pos+len(i):len(newString)]
                         startPos = pos+len(i)
 
                 self.underlineFlag = False
