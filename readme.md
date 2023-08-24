@@ -9,8 +9,12 @@ Lastly, rank each candidate based on its probability of being the intended word,
 
 There are 4 types of errors: substitution (substituting one letter for another), deletion (deleting one character), insertion (adding an extra character), and transposition(swapping the position of two adjacent letters).  
 The letter w represents the correct word. The letter x represents the incorrect word, the one that the user typed. 
-P(w) is the probability of word w being typed, and P(x) is the probability of the word x being typed. P(x | w) is the probability of x being typed given that w was the intended word. In other words, the probability that you would type x if you meant to type w. P(w | x) is the probability of w being the intended word given that x was typed. This is the value that matters and is used to rank all candidate corrections. The formula is based on Bayes’ Theorem formula P(w | x) = P(x | w) * P(w) / P(x). P(x) = 100% since we know that x was typed, so the formula can be reduced to P(w | x) = P(x | w) * P(w)
+P(w) is the probability of word w being typed, and P(x) is the probability of the word x being typed. P(x | w) is the probability of x being typed given that w was the intended word. In other words, the probability that you would type x if you meant to type w. P(w | x) is the probability of w being the intended word given that x was typed. This is the value that matters and is used to rank all candidate corrections. The formula is based on Bayes’ Theorem formula P(w | x) = P(x | w) * P(w) / P(x). P(x) = 100% since we know that x was typed, so the formula can be reduced to P(w | x) = P(x | w) * P(w). 
+
+
 P(x  | w), which is the probability of typing x when you intended to type w, is determined using a file that compiles thousands of common English spelling errors made online, and determining their frequencies. For example, typing A instead of E happens 100 times more than typing j instead of p. 
+
+
 P(w), which is the probability of word w being typed, is determined using a list of all words in this programs dictionary, and their corresponding frequencies used on the internet. As you may know, “the” is the most common word, with over 23 billion instances in this dataset while a word like “puzzle” only has 14 million instances in this dataset.  
 
 Options: 
