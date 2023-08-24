@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.show()
+    window.ui.showWelcomeScreen()
 
     sys.exit(app.exec())
 

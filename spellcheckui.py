@@ -112,18 +112,27 @@ class Ui_SpellCheck(object):
         self.verticalLayout_3.addWidget(self.realToggle)
         self.realToggle.setChecked(True)
         #self.verticalLayout_3.addWidget(self.horizontalLayout)
+        self.info = QtWidgets.QPushButton(parent=self.verticalLayoutWidget)
+        self.info.setObjectName("info")
+        self.info.setGeometry(800,0,80,80)
+        self.info.clicked.connect(self.showWelcomeScreen)
+        self.info.setIcon(QtGui.QIcon('info.png'))
+        self.info.setIconSize(QtCore.QSize(75,75))
+        self.infoText = open("welcome.txt").read()
+
+
         self.question = QtWidgets.QPushButton(parent=self.verticalLayoutWidget)
         self.question.setObjectName("question1")
         self.question.setText("?")
-        #self.question.setStyleSheet("border: 1px; border-radius: 3px; background-color: rgb(190, 190, 190)" )
         self.question.setGeometry(180,155,16,16)
         self.question.clicked.connect(self.showDialogBigram)
+
         self.question2 = QtWidgets.QPushButton(parent=self.verticalLayoutWidget)
         self.question2.setObjectName("question2")
         self.question2.setText("?")
         self.question2.clicked.connect(self.showDialogReal)
-        #self.question2.setStyleSheet("border: 1px; border-radius: 3px; background-color: rgb(190, 190, 190)" )
         self.question2.setGeometry(180,180,16,16)
+        
         self.tableWidget = QtWidgets.QTableWidget(parent=self.verticalLayoutWidget)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(8)
@@ -168,6 +177,7 @@ class Ui_SpellCheck(object):
         self.verticalLayout_3.addWidget(self.tableWidget)
         SpellCheck.setCentralWidget(self.centralwidget)
 
+        self.welcomeBox = QtWidgets.QMessageBox()
         self.msgBox = QtWidgets.QMessageBox()
         self.msgBox2 = QtWidgets.QMessageBox()
 
@@ -179,6 +189,7 @@ class Ui_SpellCheck(object):
         self.threadpool = QThreadPool() 
 
         self.input_list = []
+
 
         
     def inputs(self):
@@ -241,13 +252,26 @@ class Ui_SpellCheck(object):
         pass
         # print(str(self.textEdit.textCursor().selectionStart()) + " to " + str(self.textEdit.textCursor().selectionEnd()))
 
+    def showWelcomeScreen(self):
+        self.welcomeBox.setWindowTitle("Noisy Channel Model for Spellchecking and Autocorrect")
+        self.welcomeBox.setWindowIconText("Welcome")
+        self.welcomeBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        self.welcomeBox.setFixedSize(500,500)
+        self.welcomeBox.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        opening = "Welcome! This program demonstrates the noisy-channel model used for autocorrect. This statistical model ranks potential corrections and displays the most probable ones to the user."
+        link = "\n This application is based on the following <a href='https://web.stanford.edu/~jurafsky/slp3/B.pdf'>Stanford paper.<\a>"
+        
+        self.welcomeBox.setText(opening + link)
+        self.welcomeBox.setInformativeText(self.infoText)
+
+
+        self.welcomeBox.exec()
 
     def showDialogBigram(self):
         self.msgBox.setIcon(QtWidgets.QMessageBox.Information)
-        self.msgBox.setText("When this option is on, the probability of a correction being next to the words before and after it is considered. This is based off of a limited dataset, which may missing some common word-pairs, so you have the option to turn it off.")
+        self.msgBox.setText("When this option is on, the probability of a correction being next to the words before and after it is considered. This is based off of a limited dataset, which may missing some common word pairs, so you have the option to turn it off.")
         self.msgBox.setWindowTitle("Context-Aware Correction")
         self.msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        self.msgBox.buttonClicked.connect(self.msgButtonClick)
 
         self.msgBox.exec()
         

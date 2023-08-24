@@ -1,0 +1,5 @@
+The idea behind it is that a word has been "distorted" by being passed through a noisy communication channel. For example, a correctly spelled word such as "access" may be distorted into the incorrectly spelled "acress."
+
+The algorithm first creates a list of spelling correction candidates. Then it determines the probability of each correction by multiplying two other probabilities: the probability of the correction being typed in a vacuum, and the probability of making the error itself.
+
+Go ahead and try out the program yourself! Type a sentence in the textbox. By default the program will find corrections for both incorrect and correct words, but correct words are only underlined if they're likely to be mistyped. 
