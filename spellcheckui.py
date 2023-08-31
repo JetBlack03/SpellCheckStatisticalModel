@@ -134,6 +134,8 @@ class Ui_SpellCheck(object):
         self.question2.setGeometry(180,180,16,16)
         
         self.tableWidget = QtWidgets.QTableWidget(parent=self.verticalLayoutWidget)
+        self.tableWidget.cellDoubleClicked.connect(self.tableSelected)
+        self.tableWidget.itemClicked.connect(self.headerSelected)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(8)
         self.tableWidget.setRowCount(8)
@@ -141,6 +143,7 @@ class Ui_SpellCheck(object):
         #self.tableWidget.horizontalHeader().setFixedWidth()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.horizontalHeader().sectionClicked.connect(self.headerSelected)
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(1, item)
@@ -180,6 +183,7 @@ class Ui_SpellCheck(object):
         self.welcomeBox = QtWidgets.QMessageBox()
         self.msgBox = QtWidgets.QMessageBox()
         self.msgBox2 = QtWidgets.QMessageBox()
+        self.msgBoxProb = QtWidgets.QMessageBox()
 
         self.retranslateUi(SpellCheck)
         QtCore.QMetaObject.connectSlotsByName(SpellCheck)
@@ -235,12 +239,16 @@ class Ui_SpellCheck(object):
         item.setText(_translate("SpellCheck", "Position"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("SpellCheck", "P(X|W)"))
+        item.setToolTip("This is the odds of me doing your mom")
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("SpellCheck", "Unigram P(W)"))
+        item.setStatusTip("this is the odds of your mom doing me")
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("SpellCheck", "Bigram P(W)"))
+        item.setWhatsThis("whats this? oh its me doing your mom")
         item = self.tableWidget.horizontalHeaderItem(7)
         item.setText(_translate("SpellCheck", "P(W|X)"))
+        
 
         
         __sortingEnabled = self.tableWidget.isSortingEnabled()
@@ -282,6 +290,43 @@ class Ui_SpellCheck(object):
         self.msgBox2.setStandardButtons(QtWidgets.QMessageBox.Ok)
 
         self.msgBox2.exec()
+
+    def headerSelected(self, index):
+        if index == 4:
+            self.showConditional()
+        elif index == 5:
+            self.showUnigram()
+        elif index == 6:
+            self.showBigram()
+
+    def tableSelected(self, row, column):
+        if column == 4:
+            self.showConditional()
+        elif column == 5:
+            self.showUnigram()
+        elif column == 6:
+            self.showBigram()
+    
+    def showConditional(self):
+        self.msgBoxProb.setText("P(X|W) represents the probability of mistyping a word W as a non-word X. In other words, the probability of making the given error (substitution, transposition, deletion, insertion)")
+        self.msgBoxProb.setWindowTitle("P(X|W)")
+        self.msgBoxProb.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+        self.msgBoxProb.exec()
+    
+    def showUnigram(self):
+        self.msgBoxProb.setText("P(W) represents the probability of word W being typed regardless of context. It is based on a dataset comprising millions of modern English texts that ranks the most common words by their frequency")
+        self.msgBoxProb.setWindowTitle("Unigram P(W)")
+        self.msgBoxProb.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+        self.msgBoxProb.exec()
+    
+    def showBigram(self):
+        self.msgBoxProb.setText("The bigram probability is the probability of the word W appearing next to the words before and after it. The dataset for this is much more limited and prone to bad results, so I have included an option to exclude this value from the calculation.")
+        self.msgBoxProb.setWindowTitle("Bigram P(W)")
+        self.msgBoxProb.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+        self.msgBoxProb.exec()
 
     def textEntered(self):
         #about all words
